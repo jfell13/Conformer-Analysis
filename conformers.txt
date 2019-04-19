@@ -1,0 +1,16 @@
+The conf-subs.py will create a .xyz file from each conformer .pdb, and then for each .xyz a Gaussian16 input and submission file will be made.
+The script will then auto-submit these jobs. Depending on the size of your molecule these optimizations can take a whole 24 hours to complete. 
+
+Options include:
+-t Theory [ex: B3lYP, M06, B97, etc. (Default: B3LYP)] 
+-b Basis set [ex: 6-31G(d), 6-311+G(d,p), etc. (Default: 6-311G(d,p)]
+-d Dispersion corrections [ex: GD2, GD3, or GD3BJ (Default: none)]
+-s Solvation corrections [ex: ethanol, chcl3, ch2cl2, or water (Default: none)]
+-c Charge [ex: -1, 0, +2 (Default: 0)]
+
+After Gaussian is completed, then use confs-analysis.py. This script will iterate through each output file (.log) and parse for different
+values to piece together for a relatively accurate free energy value (a quasi harmonic corrected Gibbs free energy; aka qG). After calculating
+the qG for each .log, the script generates energies.txt which contains the conformer name, qG and the delta-qG based upon the lowest energy
+conformer, and it is ordered from lowest to highest. After this step the script then takes the conformers that are within 3 kcal mol if the
+lowest energy conformer and create a .confs.pdb file with all these low energy conformers. This script also allows you to name the final
+conformer file.
